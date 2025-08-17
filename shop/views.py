@@ -10,9 +10,9 @@ from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
-def home(request):
+def index(request):
     products = Product.objects.all()
-    return render(request, "shop/home.html", {
+    return render(request, "shop/index.html", {
         "products": products})
 
 def category_products(request, category_name):
@@ -41,7 +41,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('shop:home')
+            return redirect('shop:index')
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('shop:login')
@@ -76,7 +76,7 @@ def register_view(request):
     
 def logout_view(request):
     logout(request)
-    return redirect('shop:home')
+    return redirect('shop:index')
 
 def cart_view(request):
     return render(request, 'shop/cart.html')
