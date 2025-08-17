@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Women's Fashion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color:aliceblue ;              
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #211f20;
+            padding: 12px 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        /* Logo */
+        .logo {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo:hover {
+            color: #f472b6;
+            transform: scale(1.05);
+        }
+
+        /* Hamburger (mobile only) */
+        .hamburger {
+            font-size: 26px;
+            color: white;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        /* Search bar */
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            width: 60%;
+            max-width: 450px;
+        }
+
+        .search-form input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 5px 0 0 5px;
+            flex: 1;
+            outline: none;
+        }
+
+        .search-form .search-btn {
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            background-color: antiquewhite;
+            cursor: pointer;
+        }
+
+        /* Nav Links */
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            background: #211f20;
+            width: 100%;
+            padding: 10px;
+            position: absolute;
+            top: 60px;
+            left: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a {
+            color: white;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #333;
+            min-width: 160px;
+            z-index: 1;
+            flex-direction: column;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background: #f472b6;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* ✅ Desktop layout */
+        @media (min-width: 769px) {
+            nav {
+                justify-content: space-between;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                position: static;
+                background: none;
+                width: auto;
+                gap: 20px;
+            }
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            width: fit-content;
+        }
+
+        .alert-success {
+            background-color: #369236;
+            color: white;
+        }
+
+        .alert-error {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* ===================== Footer Styles ===================== */
+  
+/* Add to your CSS */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* full viewport height */
+    margin: 0;
+}
+
+.container {
+    flex: 1; /* takes remaining space between nav and footer */
+}
+
+.footer {
+    background-color: #222;
+    color:#e91e63;
+    padding: 20px 15px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    text-align: center;
+}
+
+
+ </style>
+</head>
+<body>
+
+<nav>
+    <!-- Hamburger Left -->
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+    <!-- Logo Left -->
+    <div class="logo">Women's Fashion</div>
+
+    <!-- Search Center -->
+    <div class="search-bar">
+        <form method="get" action="{% url 'shop:product_search' %}" class="search-form">
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+
+    <!-- Navigation Links Right -->
+    <div class="nav-links" id="navLinks">
+        <a href="{% url 'shop:home' %}">Home</a>
+
+        <div class="dropdown">
+            <a href="#">Fashion ▾</a>
+            <div class="dropdown-content">
+                <a href="{% url 'shop:category_products' 'saree' %}">Sarees</a>
+                <a href="{% url 'shop:category_products' 'kurti' %}">Kurtis</a>
+            </div>
+        </div>
+
+        <a href="{% url 'shop:cart' %}">Cart ({{ request.session.cart|length|default:0 }})</a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'shop:logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'shop:login' %}">Login</a>
+            <a href="{% url 'shop:register' %}">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Alert Messages -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- ===================== Footer ===================== -->
+<footer class="footer">
+    <div class="footer-bottom">
+        <div class="footer-line1">
+            &copy; 2025 Stylish Dresses. All rights reserved.
+        </div>
+        <hr>
+        <div class="footer-line2">
+            Email: Nivetha@gmail.com | Phone: +91 7789765419 | Address: Coimbatore, India
+        </div>
+    </div>
+</footer>
+
+
+<script>
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>

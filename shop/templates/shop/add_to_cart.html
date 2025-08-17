@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Products</h2>
+
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  {% for product_id, product in products.items %}
+  <div style="border: 1px solid #ccc; padding: 10px; width: 200px; text-align: center;">
+      <img src="{{ product.image }}" width="150" alt="{{ product.name }}">
+      <h3>{{ product.name }}</h3>
+      <p>₹{{ product.price }}</p>
+      <form method="post" action="{% url 'shop:add_to_cart' product_id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn">Add to Cart</button>
+      </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

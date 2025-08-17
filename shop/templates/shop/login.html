@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+    /* Login Page Styling */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.login-container form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.login-container form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.login-container form input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.login-container form button {
+    width: 100%;
+    padding: 12px;
+    background: #28a745;   /* green for login */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-container form button:hover {
+    background: #1e7e34;
+}
+
+.login-container .redirect-text {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-container .redirect-text a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter Username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter Password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p class="redirect-text">
+        Don't have an account?  
+        <a href="{% url 'shop:register' %}">Register now</a>
+    </p>
+</div>
+{% endblock %}

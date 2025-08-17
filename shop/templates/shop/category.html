@@ -1,0 +1,18 @@
+{% extends 'shop/base.html' %}
+{% block title %}{{ category|title }} - My Fashion Shop{% endblock %}
+
+{% block content %}
+<h2>{{ category|title }}</h2>
+<div class="grid">
+    {% for product in products %}
+        <div class="card">
+            <img src="{{ shop:product.image.url }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <p>₹{{ product.price }}</p>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+    {% empty %}
+        <p>No products found in this category.</p>
+    {% endfor %}
+</div>
+{% endblock %}

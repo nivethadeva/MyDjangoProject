@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+{%load static%}
+<style>
+    .product-detail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 90px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+}
+
+.product-image {
+    flex: 1 1 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-image img {
+    width: 370px;      /* fixed width */
+    height: 460px;     /* fixed height */
+    object-fit: cover; /* crops/zooms image to fit perfectly */
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.product-image img:hover {
+    transform: scale(1.05);
+}
+
+
+.product-info {
+    flex: 1 1 400px;
+}
+
+.product-info h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+.add-cart {
+    background: #3498db;
+    color: white;
+}
+
+.add-cart:hover {
+    background: #2980b9;
+}
+
+.buy-now {
+    background: #e67e22;
+    color: white;
+}
+
+.buy-now:hover {
+    background: #d35400;
+}
+
+.alert {
+  display: inline-block;
+  background:  #ff4081;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  
+}
+
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .product-image img {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+    }
+}
+
+
+</style>
+
+<div class="product-detail-container">
+    <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="price">₹{{ product.price }}</p>
+        <p class="description">{{ product.description }}</p>
+        <div class="buttons">
+       <form action="{% url 'shop:add_to_cart' product.id %}" method="post" style="display:inline;">
+             {% csrf_token %}
+            <button type="submit" class="btn add-cart">Add to Cart</button>
+        </form>
+    <button class="btn buy-now">Buy Now</button>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+

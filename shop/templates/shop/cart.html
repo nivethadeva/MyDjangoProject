@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart_extras %}
+
+{% block content %}
+<style>
+  .alert {
+  display: inline-block;
+  background:  #ff4081;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  margin-bottom: 15px;  
+}
+
+</style>
+<h2 style="text-align: center; margin-bottom: 20px;">Shopping Carts</h2>
+
+{% if cart_items %}
+<div class="cart-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px; width:80%; margin:auto;">
+    {% for key, item in cart_items.items %}
+    <div class="cart-card" style="border:1px solid #ccc; padding:15px; border-radius:8px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+        <!-- Use .url for images -->
+          <img src="{{ item.image }}" width="90">
+
+           
+        <h3>{{ item.name }}</h3>
+        <p>Price: ₹{{ item.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p><strong>Total: ₹{{ item.price|multiply:item.quantity }}</strong></p>
+        <a href="{% url 'shop:remove_from_cart' key %}" 
+           style="display:inline-block; padding:5px 10px; background-color:#ff4d4d; color:white; border-radius:5px; text-decoration:none; margin-top:5px;">
+           Remove
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="text-align:center; margin-top:30px;">
+    <h3>Total Price: ₹{{ total_price }}</h3>
+    <a href="#" style="display:inline-block; 
+     padding:10px 20px; background-color:#28a745;
+      color:white; border-radius:5px; text-decoration:none;
+       margin-top:10px;">
+        Proceed to Checkout
+    </a>
+</div>
+
+{% else %}
+<p style="text-align:center;">Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}
