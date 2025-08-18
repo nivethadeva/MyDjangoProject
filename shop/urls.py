@@ -4,7 +4,7 @@ from . import views
 app_name = 'shop'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.home, name='home'),
     path('product/<int:pk>/', views.product_detail, name='product_detail'),
     path('buy-now/<int:id>/', views.buy_now, name='buy_now'),
     path('category/<str:category_name>/', views.category_products, name='category_products'),
@@ -19,7 +19,9 @@ urlpatterns = [
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
 ]
+
+
+
    
     
-
    
