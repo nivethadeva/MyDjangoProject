@@ -111,6 +111,28 @@
     }
 }
 
+.add-cart-btn {
+    background: #3498db;   /* blue */
+    color: #fff;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border:20px;   /* rounded */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+}
+
+.add-cart-btn:hover {
+    background: #2980b9;   /* darker blue */
+    transform: scale(1.05);
+    box-shadow: 0px 6px 10px rgba(0,0,0,0.2);
+}
+
+.add-cart-btn:active {
+    transform: scale(0.95);
+}
 
 </style>
 
@@ -123,11 +145,14 @@
         <p class="price">₹{{ product.price }}</p>
         <p class="description">{{ product.description }}</p>
         <div class="buttons">
-       <form action="{% url 'shop:add_to_cart' product.id %}" method="post" style="display:inline;">
-             {% csrf_token %}
-            <button type="submit" class="btn add-cart">Add to Cart</button>
-        </form>
+      <form action="{% url 'shop:add_to_cart' product.id %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <button type="submit" class="add-cart-btn">Add to Cart</button>
     <button class="btn buy-now">Buy Now</button>
+</form>
+
+    
 
         </div>
     </div>

@@ -2,15 +2,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Women's Fashion</title>
+    <title >Women's Fashion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color:aliceblue ;              
+            background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+
         }
+.container {
+  flex: 1 0 auto;  /* grow but don’t force overscroll */
+}
+
+.footer {
+  flex-shrink: 0; /* footer stays fixed at bottom */
+}
 
         nav {
             display: flex;
@@ -73,6 +86,30 @@
             background-color: antiquewhite;
             cursor: pointer;
         }
+
+        /* Username */
+        .username {
+    font-weight: 900;
+    color: #f1eaee;
+    margin-left: 15px;
+    margin-right: 15px;
+    white-space: nowrap;
+    padding: 5px 12px;
+    border: 2px solid  #e91e63;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: default;
+    display: inline-block;
+    background-color: #211f20; /* keeps it neat */
+}
+
+/* Hover effect */
+.username:hover {
+    background-color: #10b981; /* green */
+    color: #fff;
+    border-color:#211f20;
+}
+
 
         /* Nav Links */
         .nav-links {
@@ -175,31 +212,27 @@
             color: white;
         }
 
-        /* ===================== Footer Styles ===================== */
-  
-/* Add to your CSS */
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* full viewport height */
-    margin: 0;
-}
+        /* Footer */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-.container {
-    flex: 1; /* takes remaining space between nav and footer */
-}
+        .container {
+            flex: 1;
+        }
 
-.footer {
-    background-color: #222;
-    color:#e91e63;
-    padding: 20px 15px;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    text-align: center;
-}
-
-
- </style>
+        .footer {
+            background-color: #222;
+            color: #e91e63;
+            padding: 20px 15px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -207,8 +240,8 @@ body {
     <!-- Hamburger Left -->
     <div class="hamburger" onclick="toggleMenu()">☰</div>
 
-    <!-- Logo Left -->
-    <div class="logo">Women's Fashion</div>
+    <!-- Logo -->
+    <a href="{% url 'shop:home' %}" class="logo">Women's Fashion</a>
 
     <!-- Search Center -->
     <div class="search-bar">
@@ -218,7 +251,12 @@ body {
         </form>
     </div>
 
-    <!-- Navigation Links Right -->
+    <!-- ✅ Username -->
+    {% if user.is_authenticated %}
+        <span class="username">Hi, {{ user.username }}</span>
+    {% endif %}
+
+    <!-- Navigation Links -->
     <div class="nav-links" id="navLinks">
         <a href="{% url 'shop:home' %}">Home</a>
 
@@ -255,7 +293,7 @@ body {
     {% endblock %}
 </div>
 
-<!-- ===================== Footer ===================== -->
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-bottom">
         <div class="footer-line1">

@@ -107,7 +107,21 @@ def product_detail(request, pk):
 # Product list page
 def product_list(request):
     return render(request, 'shop/product_list.html', {'products': products})
-    
+
+
+def cart_view(request):
+    cart = request.session.get('cart', {})
+    total_price = sum(item['price'] * item['quantity'] for item in cart.values())
+    return render(request, 'shop/cart.html', {'cart_items': cart, 'total_price': total_price})
+
+def remove_from_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    if str(product_id) in cart:
+        del cart[str(product_id)]
+        request.session['cart'] = cart
+        messages.success(request, "Item removed from cart!")
+    return redirect('shop:cart')  # <-- This name must match urls.py
+
 def add_to_cart(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
@@ -123,29 +137,15 @@ def add_to_cart(request, product_id):
         cart[str(product_id)] = {
             'name': product.name,
             'price': float(product.price),
-            'image': product.image.url,  # use .url for ImageField
-            'quantity': 1
+            'image': product.image.url,
+            'quantity': 1,
         }
 
     request.session['cart'] = cart
     messages.success(request, f"{product.name} added to cart!")
-    # Stay on the same page
-    next_url = request.GET.get('next')
-    if next_url:
-        return redirect(next_url)
 
-    # Fallback if `next` not given
-    return redirect('shop:product_list')
-
-def cart_view(request):
-    cart = request.session.get('cart', {})
-    total_price = sum(item['price'] * item['quantity'] for item in cart.values())
-    return render(request, 'shop/cart.html', {'cart_items': cart, 'total_price': total_price})
-
-def remove_from_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        del cart[str(product_id)]
-        request.session['cart'] = cart
-        messages.success(request, "Item removed from cart!")
-    return redirect('shop:cart')  # <-- This name must match urls.py
+    # ✅ Redirect back to same page
+    referer = request.META.get("HTTP_REFERER")
+    if referer:
+        return redirect(referer)
+    return redirect("shop:product_list")
