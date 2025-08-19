@@ -9,7 +9,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "changeme")  # Railway: set SECRET_KEY in e
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Allow Railway domains
-ALLOWED_HOSTS = ["*", ".up.railway.app"]
+ALLOWED_HOSTS = ['*']
 
 # CSRF protection for Railway
 CSRF_TRUSTED_ORIGINS = [
